@@ -124,7 +124,7 @@ static ALLEGRO_JOYSTICK *andjoy_get_joystick(int num)
 
     if (num >= andjoy_num_joysticks())
        return NULL;
-    
+
     andjoy = *((ALLEGRO_JOYSTICK_ANDROID **)_al_vector_ref(&joysticks, num));
     joy = &andjoy->parent;
 
@@ -200,30 +200,31 @@ void _al_android_generate_accelerometer_event(float x, float y, float z)
     ALLEGRO_JOYSTICK *joy = &accel->parent;
 
     ALLEGRO_EVENT_SOURCE *es = al_get_joystick_event_source();
+    if(es) {
+        ALLEGRO_EVENT event;
 
-    ALLEGRO_EVENT event;
+        _al_event_source_lock(es);
 
-    _al_event_source_lock(es);
+        if (_al_event_source_needs_to_generate_event(es)) {
+            float pos[] = {x, y, z};
+            int i;
+            for (i = 0; i < 3; i++) {
+                event.joystick.id = joy;
+                event.joystick.type = ALLEGRO_EVENT_JOYSTICK_AXIS;
+                event.joystick.timestamp = al_get_time();
+                event.joystick.stick = 0;
+                event.joystick.axis = i;
+                event.joystick.pos = pos[i];
+                event.joystick.button = 0;
 
-    if (_al_event_source_needs_to_generate_event(es)) {
-        float pos[] = {x, y, z};
-        int i;
-        for (i = 0; i < 3; i++) {
-            event.joystick.id = joy;
-            event.joystick.type = ALLEGRO_EVENT_JOYSTICK_AXIS;
-            event.joystick.timestamp = al_get_time();
-            event.joystick.stick = 0;
-            event.joystick.axis = i;
-            event.joystick.pos = pos[i];
-            event.joystick.button = 0;
+                accel->joystate.stick[0].axis[i] = pos[i];
 
-            accel->joystate.stick[0].axis[i] = pos[i];
-
-            _al_event_source_emit_event(es, &event);
+                _al_event_source_emit_event(es, &event);
+            }
         }
-    }
 
-    _al_event_source_unlock(es);
+        _al_event_source_unlock(es);
+    }
 }
 
 void _al_android_generate_joystick_axis_event(int index, int stick, int axis, float value)
