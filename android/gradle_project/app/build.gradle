@@ -1,19 +1,23 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    defaultConfig {
-        applicationId "org.liballeg.${APP_ID}"
-        minSdkVersion 15
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-    }
+   compileSdkVersion 26
+   defaultConfig {
+      applicationId "org.liballeg.${APP_ID}"
+      minSdkVersion 15
+      targetSdkVersion 26
+      versionCode 1
+      versionName "1.0"
+
+      manifestPlaceholders = [
+         APP_ID: project.properties.APP_ID
+      ]
+   }
+   buildTypes {
+      release {
+         minifyEnabled false
+      }
+   }
 }
 
 dependencies {
