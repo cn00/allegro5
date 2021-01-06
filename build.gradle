@@ -1,0 +1,39 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+// https://github.com/invertase/react-native-firebase/issues/915
+// Disable instant run in android studio if occur "Failed to find byte code for */*/*/*"
+
+buildscript {
+   repositories {
+      google()
+      jcenter()
+      jcenter{url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+      maven  {url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+      maven  {url 'https://maven.aliyun.com/repository/google/'}
+      mavenLocal()
+      mavenCentral()
+   }
+   dependencies {
+      // classpath 'com.android.tools.build:gradle:3.6.1'
+      classpath 'com.android.tools.build:gradle:3.5.0'
+   }
+
+}
+
+allprojects {
+   // https://blog.csdn.net/lj402159806/article/details/78422953
+
+   repositories {
+      jcenter{url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
+      maven{  url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+      maven  {url 'https://maven.aliyun.com/repository/google/'}
+      google()
+      jcenter()
+      mavenLocal()
+      mavenCentral()
+
+      flatDir {
+         dirs 'libs'
+      }
+   }
+}

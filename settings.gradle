@@ -1,0 +1,7 @@
+apply from: "settingsUtil.gradle"
+
+ext.includeProjects('android/')
+ext.includeProjects('android/gradle_project/')
+
+// include ":allegro"
+// project(':allegro').projectDir = new File(rootProject.projectDir, 'android/gradle_project/allegro')
